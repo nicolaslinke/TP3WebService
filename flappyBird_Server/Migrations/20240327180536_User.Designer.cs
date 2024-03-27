@@ -12,8 +12,8 @@ using flappyBird_Server.Data;
 namespace flappyBird_Server.Migrations
 {
     [DbContext(typeof(flappyBird_ServerContext))]
-    [Migration("20240327174537_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240327180536_User")]
+    partial class User
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
