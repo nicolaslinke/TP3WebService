@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace flappyBird_Server.Models
 {
@@ -16,5 +17,7 @@ namespace flappyBird_Server.Models
 
         public bool isPublic { get; set; }
 
+        [JsonIgnore]
+        public virtual User? User { get; set; }
     }
 }
