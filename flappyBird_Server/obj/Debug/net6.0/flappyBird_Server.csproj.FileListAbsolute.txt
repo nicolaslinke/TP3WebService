@@ -254,3 +254,5 @@ C:\Users\2185802\Downloads\TP3WebService\flappyBird_Server\obj\Debug\net6.0\refi
 C:\Users\2185802\Downloads\TP3WebService\flappyBird_Server\obj\Debug\net6.0\flappyBird_Server.pdb
 C:\Users\2185802\Downloads\TP3WebService\flappyBird_Server\obj\Debug\net6.0\flappyBird_Server.genruntimeconfig.cache
 C:\Users\2185802\Downloads\TP3WebService\flappyBird_Server\obj\Debug\net6.0\ref\flappyBird_Server.dll
+C:\Users\2185802\Downloads\TP3WebService\flappyBird_Server\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\2185802\Downloads\TP3WebService\flappyBird_Server\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
