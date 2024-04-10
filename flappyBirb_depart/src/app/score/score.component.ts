@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Score } from '../models/score';
+import { HttpClient, HttpHandler, HttpHeaders } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-score',
@@ -8,17 +10,29 @@ import { Score } from '../models/score';
 })
 export class ScoreComponent implements OnInit {
 
+  domain : string = "https://localhost:7153/"
+
   myScores : Score[] = [];
   publicScores : Score[] = [];
   userIsConnected : boolean = false;
 
-  constructor() { }
+  constructor(public http : HttpClient) { }
 
   async ngOnInit() {
 
-    this.userIsConnected = sessionStorage.getItem("token") != null;
+    this.userIsConnected = localStorage.getItem("token") != null;
 
+    let token = localStorage.getItem("token");
+    let httpOptions = {
+       headers : new HttpHeaders({
+        'Content-Type' : 'application/json',
+        'Authorization' : 'Bearer' + token
+       })
+    };
 
+    let x = await lastValueFrom(this.http.get<Score[]>(this.domain + "api/Scores", httpOptions))
+    console.log(x);
+    this.publicScores = x;
   }
 
   async changeScoreVisibility(score : Score){

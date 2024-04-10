@@ -1,5 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Game } from './gameLogic/game';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Score } from '../models/score';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-play',
@@ -8,10 +11,12 @@ import { Game } from './gameLogic/game';
 })
 export class PlayComponent implements OnInit, OnDestroy{
 
+  domain : string = "https://localhost:7153/"
+
   game : Game | null = null;
   scoreSent : boolean = false;
 
-  constructor(){}
+  constructor(public http : HttpClient){}
 
   ngOnDestroy(): void {
     // Ceci est crotté mais ne le retirez pas sinon le jeu bug.
@@ -28,7 +33,7 @@ export class PlayComponent implements OnInit, OnDestroy{
     this.scoreSent = false;
   }
 
-  sendScore(){
+  async sendScore(){
     if(this.scoreSent) return;
 
     this.scoreSent = true;
@@ -38,8 +43,18 @@ export class PlayComponent implements OnInit, OnDestroy{
     // Le temps est dans sessionStorage.getItem("time")
     // La date sera choisie par le serveur
 
+    let token = localStorage.getItem("token");
+    let httpOptions = {
+       headers : new HttpHeaders({
+        'Content-Type' : 'application/json',
+        'Authorization' : 'Bearer' + token
+       })
+    };
 
+    let newScore = new Score(0, "aaa", Date.now().toString(), "232", 2, true)
 
+    let x = await lastValueFrom(this.http.post<Score[]>(this.domain + "api/Scores", newScore, httpOptions))
+    console.log(x);
   }
 
 }

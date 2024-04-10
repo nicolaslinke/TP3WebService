@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { LoginDTO } from '../models/LoginDTO';
+import { RegisterDTO } from '../models/RegisterDTO';
 
 @Component({
   selector: 'app-login',
@@ -39,8 +40,10 @@ export class LoginComponent implements OnInit {
     this.route.navigate(["/play"]);
   }
 
-  register(){
-
+  async register() : Promise<void>{
+    let registerDTO = new RegisterDTO(this.registerUsername, this.registerEmail, this.registerPassword, this.registerPasswordConfirm);
+    let x = await lastValueFrom(this.http.post<any>(this.domain + "api/Users/Register", registerDTO))
+    console.log(x);
   }
 
 }

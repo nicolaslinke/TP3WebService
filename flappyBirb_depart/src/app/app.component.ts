@@ -24,7 +24,7 @@ export class AppComponent {
 
     this.toggleLogout = !this.toggleLogout;
 
-    sessionStorage.removeItem("token");
+    localStorage.removeItem("token");
   }
 
 }
