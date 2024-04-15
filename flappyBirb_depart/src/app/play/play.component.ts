@@ -51,10 +51,13 @@ export class PlayComponent implements OnInit, OnDestroy{
        })
     };
 
-    let newScore = new Score(0, "aaa", Date.now().toString(), "232", 2, true)
-
-    let x = await lastValueFrom(this.http.post<Score[]>(this.domain + "api/Scores", newScore, httpOptions))
-    console.log(x);
+    let time = sessionStorage.getItem("time");
+    let score = sessionStorage.getItem("score");
+    if (time != null && score != null) {
+      let newScore = new Score(0, "asasd", Date.now().toString(), time.toString(), Number(score), true)
+      let x = await lastValueFrom(this.http.post<Score[]>(this.domain + "api/Scores", newScore, httpOptions))
+      console.log(x);
+    }
   }
 
 }

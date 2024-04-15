@@ -30,13 +30,31 @@ export class ScoreComponent implements OnInit {
        })
     };
 
-    let x = await lastValueFrom(this.http.get<Score[]>(this.domain + "api/Scores", httpOptions))
+    let x = await lastValueFrom(this.http.get<Score[]>(this.domain + "api/Scores/GetPublicScores", httpOptions))
     console.log(x);
     this.publicScores = x;
+
+    if (this.userIsConnected) {
+      let y = await lastValueFrom(this.http.get<Score[]>(this.domain + "api/Scores/GetMyScores", httpOptions))
+      console.log(x);
+      this.myScores = y;
+    }
   }
 
   async changeScoreVisibility(score : Score){
+    let token = localStorage.getItem("token");
 
+    let httpOptions = {
+       headers : new HttpHeaders({
+        'Content-Type' : 'application/json',
+        'Authorization' : 'Bearer' + token
+       })
+    };
+
+    if (this.userIsConnected) {
+      let x = await lastValueFrom(this.http.put<Score[]>(this.domain + "api/Scores/ChangeScoreVisibility/" + score.id, score, httpOptions));
+      console.log(x);
+    }
 
   }
 
