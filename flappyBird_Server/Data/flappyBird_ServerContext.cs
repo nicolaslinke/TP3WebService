@@ -42,12 +42,36 @@ namespace flappyBird_Server.Data
             builder.Entity<User>().HasData(u1, u2);
 
 
-            builder.Entity<Score>().HasData(new Score()
+            builder.Entity<Score>().HasData(new
             {
                 Id = 1,
                 Pseudo = "allo",
                 scoreValue = 1,
                 timeInSeconds = "1",
+                isPublic = true,
+                date = DateTime.Now.ToString()
+            }, new
+            {
+                Id = 2,
+                Pseudo = "allo",
+                scoreValue = 133,
+                timeInSeconds = "111",
+                isPublic = false,
+                date = DateTime.Now.ToString()
+            }, new
+            {
+                Id = 3,
+                Pseudo = "allo",
+                scoreValue = 34,
+                timeInSeconds = "13",
+                isPublic = false,
+                date = DateTime.Now.ToString()
+            }, new
+            {
+                Id = 4,
+                Pseudo = "allo2",
+                scoreValue = 18,
+                timeInSeconds = "123",
                 isPublic = true,
                 date = DateTime.Now.ToString()
             });

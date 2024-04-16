@@ -2,6 +2,7 @@ import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http'
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { Score } from './models/score';
+import { AuthInterceptor } from './auth.interceptor';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class ScoreServiceService {
 
   domain : string = "https://localhost:7153/"
 
-  constructor(public http : HttpClient) { }
+  constructor(public http : HttpClient, public auth: AuthInterceptor) { }
 
   async getMyScore() : Promise<Score[]>{
     let token = localStorage.getItem("token");
