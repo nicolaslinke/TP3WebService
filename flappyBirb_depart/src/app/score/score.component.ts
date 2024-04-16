@@ -26,7 +26,7 @@ export class ScoreComponent implements OnInit {
     let httpOptions = {
        headers : new HttpHeaders({
         'Content-Type' : 'application/json',
-        'Authorization' : 'Bearer' + token
+        'Authorization' : 'Bearer ' + token
        })
     };
 
@@ -36,7 +36,7 @@ export class ScoreComponent implements OnInit {
 
     if (this.userIsConnected) {
       let y = await lastValueFrom(this.http.get<Score[]>(this.domain + "api/Scores/GetMyScores", httpOptions))
-      console.log(x);
+      console.log(y);
       this.myScores = y;
     }
   }
@@ -47,13 +47,15 @@ export class ScoreComponent implements OnInit {
     let httpOptions = {
        headers : new HttpHeaders({
         'Content-Type' : 'application/json',
-        'Authorization' : 'Bearer' + token
+        'Authorization' : 'Bearer ' + token
        })
     };
 
     if (this.userIsConnected) {
       let x = await lastValueFrom(this.http.put<Score[]>(this.domain + "api/Scores/ChangeScoreVisibility/" + score.id, score, httpOptions));
       console.log(x);
+
+      window.location.reload();
     }
 
   }

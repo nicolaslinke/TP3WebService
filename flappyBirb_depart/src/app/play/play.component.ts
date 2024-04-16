@@ -47,7 +47,7 @@ export class PlayComponent implements OnInit, OnDestroy{
     let httpOptions = {
        headers : new HttpHeaders({
         'Content-Type' : 'application/json',
-        'Authorization' : 'Bearer' + token
+        'Authorization' : 'Bearer ' + token
        })
     };
 

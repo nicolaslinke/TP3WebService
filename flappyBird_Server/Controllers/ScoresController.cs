@@ -10,6 +10,7 @@ using flappyBird_Server.Models;
 using System.Security.Claims;
 using flappyBird_Server.Controllers;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace flappyBird_Server.Controllers
 {
@@ -41,16 +42,18 @@ namespace flappyBird_Server.Controllers
 
         // GET: api/Scores
         [HttpGet("GetMyScores")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Score>>> GetMyScore()
         {
             if (_context.Score == null)
             {
                 return NotFound();
             }
-            User? user = await userManager.FindByNameAsync("allo");
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User? user = await userManager.FindByIdAsync(userId);
             if (user != null)
             {
-                return user.Scores;
+                return await _context.Score.Where(x => x.Pseudo == user.UserName).ToListAsync();
             }
             return StatusCode(StatusCodes.Status400BadRequest,
                 new { Message = "Utilisateur non trouvé" });
@@ -111,16 +114,25 @@ namespace flappyBird_Server.Controllers
         // POST: api/Scores
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Score>> PostScore(Score score)
         {
           if (_context.Score == null)
           {
               return Problem("Entity set 'flappyBird_ServerContext.Score'  is null.");
           }
-            _context.Score.Add(score);
-            await _context.SaveChangesAsync();
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User? user = await userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                score.Pseudo = user.UserName;
+                _context.Score.Add(score);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetScore", new { id = score.Id }, score);
+                return CreatedAtAction("GetScore", new { id = score.Id }, score);
+            }
+            return StatusCode(StatusCodes.Status400BadRequest,
+                new { Message = "Utilisateur non trouvé" });
         }
 
         // DELETE: api/Scores/5

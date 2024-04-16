@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "WVpfcYiX6LYZUyxc98y/U7P7I7HE40Mt+a7vogo56ObxfC7Jxm11gJsO4efqIjkM1tIyvwIji6e9rfokKEcVmg==",
+  "dgSpecHash": "OglCIv0/m3sb7yBJMbB00DTxSH9f3lCfsppu+sbaP1NvHElo8ejUlrbjW+09iUzkAeXOgmH9Rf0cQVyraAavGw==",
   "success": true,
   "projectFilePath": "C:\\Users\\2185802\\Downloads\\TP3WebService\\flappyBird_Server\\flappyBird_Server.csproj",
   "expectedPackageFiles": [
@@ -241,7 +241,11 @@
     "C:\\Users\\2185802\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512",
     "C:\\Users\\2185802\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\2185802\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\2185802\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512"
+    "C:\\Users\\2185802\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
+    "C:\\Users\\2185802\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.28\\microsoft.windowsdesktop.app.ref.6.0.28.nupkg.sha512",
+    "C:\\Users\\2185802\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.28\\microsoft.netcore.app.ref.6.0.28.nupkg.sha512",
+    "C:\\Users\\2185802\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.28\\microsoft.aspnetcore.app.ref.6.0.28.nupkg.sha512",
+    "C:\\Users\\2185802\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.28\\microsoft.netcore.app.host.win-x64.6.0.28.nupkg.sha512"
   ],
   "logs": []
 }
