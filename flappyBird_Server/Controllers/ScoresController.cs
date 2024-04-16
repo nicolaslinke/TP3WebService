@@ -11,6 +11,7 @@ using System.Security.Claims;
 using flappyBird_Server.Controllers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using flappyBird_Server.Data.Services;
 
 namespace flappyBird_Server.Controllers
 {
@@ -20,11 +21,11 @@ namespace flappyBird_Server.Controllers
     {
         readonly UserManager<User> userManager;
 
-        private readonly flappyBird_ServerContext _context;
+        private readonly ScoresServices _scoreService;
 
-        public ScoresController(flappyBird_ServerContext context, UserManager<User> userManager)
+        public ScoresController(ScoresServices scoreServices, UserManager<User> userManager)
         {
-            _context = context;
+            _scoreService = scoreServices;
 
             this.userManager = userManager;
         }
@@ -33,11 +34,13 @@ namespace flappyBird_Server.Controllers
         [HttpGet("GetPublicScores")]
         public async Task<ActionResult<IEnumerable<Score>>> GetScore()
         {
-          if (_context.Score == null)
-          {
-              return NotFound();
-          }
-          return await _context.Score.Where(x => x.isPublic == true).ToListAsync();
+            IEnumerable<Score>? scores = await _scoreService.GetAllPublic();
+
+            if (scores == null)
+            {
+                return NotFound();
+            }
+            return Ok(await _scoreService.GetAllPublic());
         }
 
         // GET: api/Scores
@@ -45,36 +48,14 @@ namespace flappyBird_Server.Controllers
         [Authorize]
         public async Task<ActionResult<IEnumerable<Score>>> GetMyScore()
         {
-            if (_context.Score == null)
-            {
-                return NotFound();
-            }
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             User? user = await userManager.FindByIdAsync(userId);
             if (user != null)
             {
-                return await _context.Score.Where(x => x.Pseudo == user.UserName).ToListAsync();
+                return Ok(await _scoreService.GetMyAll(user.UserName));
             }
             return StatusCode(StatusCodes.Status400BadRequest,
                 new { Message = "Utilisateur non trouvé" });
-        }
-
-        // GET: api/Scores/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Score>> GetScore(int id)
-        {
-          if (_context.Score == null)
-          {
-              return NotFound();
-          }
-            var score = await _context.Score.FindAsync(id);
-
-            if (score == null)
-            {
-                return NotFound();
-            }
-
-            return score;
         }
 
         // PUT: api/Scores/5
@@ -87,28 +68,15 @@ namespace flappyBird_Server.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(score).State = EntityState.Modified;
+            Score? updatedScore = await _scoreService.ChangeScore(id, score);
 
-            var newScore = _context.Score.Where(x => x.Id == id).FirstOrDefault();
-            newScore.isPublic = !newScore.isPublic;
-
-            try
+            if (updatedScore != null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ScoreExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { Message = "Le score a été supprimé ou modifié. Veuillez réessayer" });
             }
 
-            return NoContent();
+            return Ok(updatedScore);
         }
 
         // POST: api/Scores
@@ -117,47 +85,20 @@ namespace flappyBird_Server.Controllers
         [Authorize]
         public async Task<ActionResult<Score>> PostScore(Score score)
         {
-          if (_context.Score == null)
-          {
-              return Problem("Entity set 'flappyBird_ServerContext.Score'  is null.");
-          }
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             User? user = await userManager.FindByIdAsync(userId);
             if (user != null)
             {
                 score.Pseudo = user.UserName;
-                _context.Score.Add(score);
-                await _context.SaveChangesAsync();
-
+                Score? newScore = await _scoreService.Add(score);
+                if (newScore == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
                 return CreatedAtAction("GetScore", new { id = score.Id }, score);
             }
             return StatusCode(StatusCodes.Status400BadRequest,
                 new { Message = "Utilisateur non trouvé" });
-        }
-
-        // DELETE: api/Scores/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteScore(int id)
-        {
-            if (_context.Score == null)
-            {
-                return NotFound();
-            }
-            var score = await _context.Score.FindAsync(id);
-            if (score == null)
-            {
-                return NotFound();
-            }
-
-            _context.Score.Remove(score);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool ScoreExists(int id)
-        {
-            return (_context.Score?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

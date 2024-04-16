@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using flappyBird_Server.Data.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<flappyBird_ServerContext>(options =>
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<flappyBird_ServerContext>(options =>
     options.UseLazyLoadingProxies();
 });
 // Add services to the container.
+builder.Services.AddScoped<ScoresServices>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
