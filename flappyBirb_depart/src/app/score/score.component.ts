@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Score } from '../models/score';
 import { HttpClient, HttpHandler, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
+import { ScoreServiceService } from '../score-service.service';
 
 @Component({
   selector: 'app-score',
@@ -16,48 +17,25 @@ export class ScoreComponent implements OnInit {
   publicScores : Score[] = [];
   userIsConnected : boolean = false;
 
-  constructor(public http : HttpClient) { }
+  constructor(public http : HttpClient, public service : ScoreServiceService) { }
 
   async ngOnInit() {
 
     this.userIsConnected = localStorage.getItem("token") != null;
 
-    let token = localStorage.getItem("token");
-    let httpOptions = {
-       headers : new HttpHeaders({
-        'Content-Type' : 'application/json',
-        'Authorization' : 'Bearer ' + token
-       })
-    };
-
-    let x = await lastValueFrom(this.http.get<Score[]>(this.domain + "api/Scores/GetPublicScores", httpOptions))
-    console.log(x);
-    this.publicScores = x;
+    this.publicScores = await this.service.getScore();
 
     if (this.userIsConnected) {
-      let y = await lastValueFrom(this.http.get<Score[]>(this.domain + "api/Scores/GetMyScores", httpOptions))
-      console.log(y);
-      this.myScores = y;
+      this.myScores = await this.service.getMyScore();
     }
   }
 
   async changeScoreVisibility(score : Score){
     let token = localStorage.getItem("token");
 
-    let httpOptions = {
-       headers : new HttpHeaders({
-        'Content-Type' : 'application/json',
-        'Authorization' : 'Bearer ' + token
-       })
-    };
-
     if (this.userIsConnected) {
-      let x = await lastValueFrom(this.http.put<Score[]>(this.domain + "api/Scores/ChangeScoreVisibility/" + score.id, score, httpOptions));
-      console.log(x);
-
+      this.service.changeVisibility(score);
       window.location.reload();
     }
-
   }
-
 }

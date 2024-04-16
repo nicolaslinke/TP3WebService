@@ -30,7 +30,16 @@ namespace flappyBird_Server.Data
                 NormalizedUserName = "ALLO"
             };
             u1.PasswordHash = hasher.HashPassword(u1, "Allo!2");
-            builder.Entity<User>().HasData(u1);
+            User u2 = new User
+            {
+                Id = "6414cd54-1776-424a-86a1-e6bd6e5225c0",
+                UserName = "allo2",
+                Email = "ol@gmail.com",
+                NormalizedEmail = "OL@GMAIL.COM",
+                NormalizedUserName = "ALLO2"
+            };
+            u2.PasswordHash = hasher.HashPassword(u2, "Allo!2");
+            builder.Entity<User>().HasData(u1, u2);
 
 
             builder.Entity<Score>().HasData(new Score()
@@ -41,7 +50,6 @@ namespace flappyBird_Server.Data
                 timeInSeconds = "1",
                 isPublic = true,
                 date = DateTime.Now.ToString()
-
             });
         }
 
