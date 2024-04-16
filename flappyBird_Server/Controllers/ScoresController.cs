@@ -70,7 +70,7 @@ namespace flappyBird_Server.Controllers
 
             Score? updatedScore = await _scoreService.ChangeScore(id, score);
 
-            if (updatedScore != null)
+            if (updatedScore == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new { Message = "Le score a été supprimé ou modifié. Veuillez réessayer" });

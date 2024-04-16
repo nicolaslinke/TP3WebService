@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using flappyBird_Server.Data;
 
@@ -11,9 +12,10 @@ using flappyBird_Server.Data;
 namespace flappyBird_Server.Migrations
 {
     [DbContext(typeof(flappyBird_ServerContext))]
-    partial class flappyBird_ServerContextModelSnapshot : ModelSnapshot
+    [Migration("20240416202856_seed")]
+    partial class seed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,17 +58,6 @@ namespace flappyBird_Server.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Score");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Pseudo = "allo",
-                            date = "2024-04-16 16:37:07",
-                            isPublic = true,
-                            scoreValue = 1,
-                            timeInSeconds = "1"
-                        });
                 });
 
             modelBuilder.Entity("flappyBird_Server.Models.User", b =>
@@ -132,24 +123,6 @@ namespace flappyBird_Server.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "6414cd54-1676-424a-86a1-e6bd6e5225c0",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "e7285b09-b053-4560-a777-5e59f0e57045",
-                            Email = "lol@gmail.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "LOL@GMAIL.COM",
-                            NormalizedUserName = "ALLO",
-                            PasswordHash = "AQAAAAEAACcQAAAAECpf5P8rUnIGRMn0DIi5tTdCS7NRbuLaG6ulQjhT5+fBqSVatIRr5F7DYGMRE23TCQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "ef37dc8d-9cdd-4148-a9ef-e886ea02818f",
-                            TwoFactorEnabled = false,
-                            UserName = "allo"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
